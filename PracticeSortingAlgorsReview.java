@@ -17,12 +17,109 @@ public class PracticeSortingAlgorsReview {
     public static void main(String[] args) {
        int[] array = {1,4,6,2,5,6,10};
        printArray(array);
-       quickSort(array,0,array.length-1);
+       mergeSort(array,0,array.length-1); 
+       System.out.printf("\nIndex: %d",binarySearch(array,2)); 
+       
+//quickSort(array,0,array.length-1);
+       
        //insertSort(array); 
        //bubbleSort(array);
        printArray(array);
 
        
+    }
+    
+    public static int binarySearch(int[] arr, int target)
+    {
+        int min = 0; 
+        int max = arr.length; // max
+        int mid = 0; 
+        
+        // Search until max is less than min
+        while( min <= max)
+        {
+            mid = (min + max)/ 2; 
+            
+            // case one we found the element
+            if(target == arr[mid])
+            {
+                return mid;  
+            } // case 2 element is less than mid
+            else if(target < arr[mid])
+            {
+                max = mid; 
+            } //case 3 element is greater than mid
+            else
+            {
+                min = mid+1; 
+            }
+        }
+            return -1; 
+        
+    }
+    
+    
+    public static boolean linearSearch(int[] arr, int target)
+    {
+        for(int i =0; i < arr.length; ++i)
+        {
+            if(target == arr[i]){return true;}
+        }
+        // not found 
+        return false;
+    }
+    
+    
+    public static void mergeSort(int[] arr, int min, int max)
+    {
+        if(min < max) // length must be greater than or backtrack
+        {
+            int mid = ((max + min) / 2);
+            mergeSort(arr,min,mid); // partition leftside
+            mergeSort(arr, (mid+1), max); // partition rightside
+            merge(arr,min,mid,max);// merge method sorts our subsets when returnng
+        }
+    }
+    
+    private static void merge(int[] arr, int min, int mid, int max)
+    {
+        int Lstart = min; // start 
+        int Lend = mid; 
+        int Rstart = (mid+1); 
+        int Rend = max; 
+        
+        // temp array to fill in our elements 
+        int[] temp = new int[arr.length]; 
+        int tempStart = Lstart; 
+        // copy data to array unitl on subsets is finished 
+        while(Lstart <= Lend && Rstart <= Rend)
+        {
+            // if Left element smaller put in temp inc k and L
+            if(arr[Lstart] <= arr[Rstart])
+            {
+                temp[tempStart++] = arr[Lstart++]; 
+            }
+            else // Right elem smaller put in temp 
+            {
+                temp[tempStart++] = arr[Rstart++]; 
+            }
+        }
+        // One of lists still have elements to copy 
+        while(Lstart <= Lend)
+        {
+            temp[tempStart++] = arr[Lstart++]; 
+        }
+        
+        // Copy right to temp
+        while(Rstart <= Rend)
+        {
+            temp[tempStart++] = arr[Rstart++]; 
+        }
+        
+        for(int i = min; i <= max;++i)
+        {
+            arr[i] = temp[i]; 
+        }
     }
     
     /*Recursive method, bases cases when arr is 1 or less terminate
